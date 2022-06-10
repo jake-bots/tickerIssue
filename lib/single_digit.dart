@@ -4,36 +4,25 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class SingleDigit extends StatefulWidget {
   SingleDigit({
-    this.boxDecoration = const BoxDecoration(color: Colors.transparent),
-    this.textStyle,
     this.initialValue = 0,
-    this.height = 83,
-    this.width = 34,
   });
 
-  final TextStyle? textStyle;
-  final BoxDecoration boxDecoration;
   final int initialValue;
-  final double height;
-  final double width;
 
   StreamController<int> valueController = StreamController<int>();
 
   @override
   State<StatefulWidget> createState() {
     final _SingleDigitState _state =
-    _SingleDigitState(textStyle, boxDecoration, 0, initialValue);
+    _SingleDigitState(0, initialValue);
     return _state;
   }
 }
 
 class _SingleDigitState extends State<SingleDigit>
     with TickerProviderStateMixin {
-  _SingleDigitState(this._textStyle, this._boxDecoration, this._previousValue,
+  _SingleDigitState(this._previousValue,
       this._currentValue);
-
-  final TextStyle? _textStyle;
-  final BoxDecoration _boxDecoration;
 
   int _previousValue = 0;
   int _currentValue = 0;
@@ -82,25 +71,24 @@ class _SingleDigitState extends State<SingleDigit>
 
   @override
   Widget build(BuildContext context) {
-    final double verticalOffset = 0.0 - (_animation.value * widget.height);
+    final double verticalOffset = 0.0 - (_animation.value * 83);
 
     return Container(
-      decoration: _boxDecoration,
+      // decoration: _boxDecoration,
       child: SizedOverflowBox(
         alignment: Alignment.topCenter,
-        size: Size(widget.width, widget.height),
+        size: Size(34, 83),
         child: ClipRect(
-          clipper: CustomDigitClipper(Size(widget.width, widget.height)),
+          clipper: CustomDigitClipper(Size(34, 83)),
           child: Transform.translate(
             offset: Offset(0, verticalOffset),
             child: Column(
               children: <Widget>[
                 for (int i = 0; i < 10; i++)
                   Container(
-                    height: widget.height,
+                    height: 83,
                     child: Text(
                       i.toString(),
-                      style: _textStyle,
                       maxLines: 1,
                     ),
                   )

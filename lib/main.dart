@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            PercentDigits(gain: _counter.toString(), isLending: false),
+            PercentDigits(gain: _counter.toString()),
           ],
         ),
       ),

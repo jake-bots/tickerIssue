@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tickerissue/single_digit.dart';
 
 class PercentDigits extends StatefulWidget {
-  PercentDigits({required this.gain, required this.isLending});
+  PercentDigits({required this.gain});
 
   final String gain;
-  final bool isLending;
 
   @override
   PercentDigitsState createState() => PercentDigitsState();
@@ -14,12 +13,6 @@ class PercentDigits extends StatefulWidget {
 class PercentDigitsState extends State<PercentDigits>
     with
         AutomaticKeepAliveClientMixin {
-  double digitHeight = 83.0;
-  double decimalHeight = 33.0;
-  double digitWidth = 34.0;
-  double decimalWidth = 14.0;
-  TextStyle? digitStyle;
-  TextStyle? decimalStyle;
 
   // Digits of the investment amount
   List<SingleDigit?> digits = List<SingleDigit?>.filled(10, null);
@@ -37,40 +30,11 @@ class PercentDigitsState extends State<PercentDigits>
 
   @override
   Widget build(BuildContext context) {
-    digitStyle = TextStyle(
-      fontSize: 20,
-      fontFamily: Theme.of(context).textTheme.headline2?.fontFamily,
-    );
-    decimalStyle = TextStyle(
-      fontSize: 20,
-      fontFamily: Theme.of(context).textTheme.headline2?.fontFamily,
-    );
-
-    // check the digit sizes and fix if they are too small
-    final Size realDigitSize = _getDigitSize(digitStyle);
-    final Size realDecimalSize = _getDigitSize(decimalStyle);
-
-    if (realDigitSize.width != digitWidth) {
-      digitWidth = realDigitSize.width;
-    }
-
-    if (realDecimalSize.width != decimalWidth) {
-      decimalWidth = realDecimalSize.width;
-    }
-
-    if (realDigitSize.height != digitHeight) {
-      digitHeight = realDigitSize.height;
-    }
-
-    if (realDecimalSize.height != decimalHeight) {
-      decimalHeight = realDecimalSize.height;
-    }
 
     // calculate value to display
     bool isNegative = false;
     double inputValue = 0.0;
     final double gainDouble = double.tryParse(widget.gain) ?? 0.00;
-    //double gainDouble = double.tryParse(viewModel.gain ?? '0.00') ?? 0.00;
     if (gainDouble < 0.0) {
       isNegative = true;
       inputValue = gainDouble.abs();
@@ -90,9 +54,6 @@ class PercentDigitsState extends State<PercentDigits>
       }
       if (digits[i] == null) {
         digits[i] = SingleDigit(
-          height: digitHeight,
-          width: digitWidth,
-          textStyle: digitStyle,
           initialValue: int.tryParse(beforeDecimal[i]) ?? 0,
         );
       } else {
@@ -103,9 +64,6 @@ class PercentDigitsState extends State<PercentDigits>
       if (decimals[j] == null) {
         decimals[j] = SingleDigit(
           initialValue: int.tryParse(afterDecimal[j]) ?? 0,
-          textStyle: decimalStyle,
-          height: decimalHeight,
-          width: decimalWidth,
         );
       } else {
         decimals[j]!.valueController.add(int.tryParse(afterDecimal[j]) ?? 0);
@@ -123,21 +81,13 @@ class PercentDigitsState extends State<PercentDigits>
             Row(children: <Widget>[
               Padding(
                   padding: EdgeInsets.only(
-                    top: widget.isLending ? 0 : 12,
+                    top: 12,
                     left: 12,
                   ),
                   child: decimals[0]),
               Padding(
-                  padding: EdgeInsets.only(top: widget.isLending ? 0 : 12),
+                  padding: EdgeInsets.only(top: 12),
                   child: decimals[1]),
-              Padding(
-                padding:
-                EdgeInsets.only(top: widget.isLending ? 0 : 10, left: 2),
-                child: Text(
-                  '%',
-                  style: decimalStyle,
-                ),
-              ),
             ]),
           ]),
         ]);
